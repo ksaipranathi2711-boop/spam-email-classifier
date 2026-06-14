@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spam Email Detector</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background:#f4f6f9;
+            text-align:center;
+            margin-top:50px;
+        }
+
+        .container{
+            width:600px;
+            margin:auto;
+            background:white;
+            padding:30px;
+            border-radius:10px;
+            box-shadow:0px 0px 10px rgba(0,0,0,0.2);
+        }
+
+        textarea{
+            width:100%;
+            padding:10px;
+            font-size:16px;
+        }
+
+        button{
+            background:#007bff;
+            color:white;
+            border:none;
+            padding:12px 20px;
+            cursor:pointer;
+            border-radius:5px;
+            font-size:16px;
+        }
+
+        button:hover{
+            background:#0056b3;
+        }
+
+        h1{
+            color:#333;
+        }
+
+        h2{
+            color:green;
+        }
+
+        a{
+            text-decoration:none;
+            color:#007bff;
+            font-weight:bold;
+            margin: 0 10px;
+        }
+    </style>
+
+</head>
+<body>
+
+<!-- ✅ ADDED NAVIGATION (NEW) -->
+<div style="margin-bottom:20px;">
+    <a href="/">Home</a>
+    <a href="/about">About</a>
+</div>
+
+<div class="container">
+
+    <h1>📧 Spam Email Detector</h1>
+
+    <form method="POST">
+
+        <textarea name="message"
+                  rows="6"
+                  placeholder="Enter email/message here..."
+                  required></textarea>
+
+        <br><br>
+
+        <button type="submit">
+            Detect Spam
+        </button>
+
+    </form>
+
+    <br>
+
+    <!-- ✅ IMPROVED RESULT DISPLAY (NEW) -->
+    {% if prediction == "Spam" %}
+        <h2 style="color:red;">🚨 {{ prediction }}</h2>
+    {% elif prediction == "Ham" %}
+        <h2 style="color:green;">✅ {{ prediction }}</h2>
+    {% else %}
+        <h2>{{ prediction }}</h2>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
