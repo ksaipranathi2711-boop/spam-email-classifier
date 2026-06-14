@@ -1,36 +1,39 @@
-from flask import Flask, render_template, request
+import streamlit as st
 import pickle
 
-app = Flask(__name__)
-
+# Load model and vectorizer
 model = pickle.load(open("model.pkl", "rb"))
 vectorizer = pickle.load(open("vectorizer.pkl", "rb"))
 
-@app.route("/", methods=["GET", "POST"])
-def home():
-    prediction = ""
+# Page title
+st.title("📧 Spam Email Detector")
 
-    if request.method == "POST":
-        message = request.form["message"]
+# Input box
+message = st.text_area("Enter Email Message")
 
+# Predict button
+if st.button("Detect Spam"):
+
+    if message.strip() == "":
+        st.warning("Please enter a message.")
+    else:
         data = vectorizer.transform([message])
 
         try:
             result = model.predict(data)[0]
 
-            if result == 1 or result == "spam":
-                prediction = "Spam"
+            if result == 1 or str(result).lower() == "spam":
+                st.error("🚨 Spam")
             else:
-                prediction = "Ham"
+                st.success("✅ Ham (Not Spam)")
 
-        except:
-            prediction = str(model.predict(data))
+        except Exception as e:
+            st.write("Prediction Error:", e)
 
-    return render_template("index.html", prediction=prediction)
-
-@app.route("/about")
-def about():
-    return render_template("about.html")
-
-if __name__ == "__main__":
-    app.run(debug=True)
+# About section
+st.markdown("---")
+st.subheader("About")
+st.write(
+    "This Spam Email Detector uses Machine Learning and NLP techniques "
+    "to classify emails as Spam or Ham."
+)
